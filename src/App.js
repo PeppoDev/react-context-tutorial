@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext, useState } from "react";
+import TodoList from "./components/TodoList";
+
+import ThemeSwitcher from "./components/ThemeSwitcher";
+
+import * as themes from "./themes";
+import { ThemeContext } from "./themes/context";
 
 function App() {
+  const theme = useContext(ThemeContext);
+  const [themeS, setThemeS] = useState(themes.dark);
+  function toggleTheme() {
+    if (themeS === themes.dark) {
+      setThemeS(themes.light);
+    } else {
+      setThemeS(themes.dark);
+    }
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ThemeContext.Provider value={themeS}>
+        <TodoList theme={themeS} />
+        <ThemeSwitcher onClick={toggleTheme} />
+      </ThemeContext.Provider>
     </div>
   );
 }
